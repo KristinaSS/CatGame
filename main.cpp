@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <map>
 #include <string>
+#include <time.h>
 
 using namespace std;
 
@@ -48,11 +49,14 @@ void startGame() {
         it = catFoods.end();
         randNum = askQuestion(&catQuestions,it);
 
+        cout << randNum <<endl;
+
         if(!answerQuestion(catAnswers,randNum, &catWeight,it)){
             cout << "Poor "
                  << catName << " died because you starved him to death at the age of " << catAge<< "!";
             return;
         }
+        cout<< "Map size: " << catQuestions.size();
         catWeight++;
         catAge++;
         cout << "----------------------------------------------------------------------"<<endl;
@@ -64,6 +68,7 @@ void startGame() {
 }
 
 int askQuestion(map<int, string> *catQuestions, map<int, string> :: iterator it){
+    srand ( time(NULL) );
     int randNum = rand() % (MAX - MIN + 1) + MIN;
 
     if((*catQuestions).find(randNum) == (*catQuestions).end() ){
@@ -84,8 +89,9 @@ bool answerQuestion(map<int, string> catAnswers, int randNum, float *catWeight, 
     string answer;
     cout << "Current cat weight: " << *catWeight << endl;
     cout << "Please answer the question!"<<endl;
-    cin >> answer;
+    getline(cin, answer);
 
+    cout<< "Answer: " << answer;
     if(answer.compare(it->second) == 0){
         it = catAnswers.end();
         return true;
@@ -112,7 +118,7 @@ void enterCatName(string *pCatName){
     string catName;
 
     cout << "You have recently adopted an kitten. What is its name?" << endl;
-    cin >> catName;
+    getline(cin, catName);
 
     *pCatName=catName;
 }
